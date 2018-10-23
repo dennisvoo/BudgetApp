@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BudgetApp</string>
+    <string name="money_left">Money Left for the Month: $%1$.2f</string>
+</resources>
