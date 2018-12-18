@@ -6,48 +6,80 @@
     android:orientation="vertical"
     tools:context=".InputActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textAlignment="center"
-        android:text="Select the month you are budgetting for" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="48dp">
+        android:layout_marginTop="32dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="4dp"
+            android:text="Choose month"
+            android:textSize="20sp"/>
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            android:textAlignment="gravity"
+            android:layout_marginEnd="4dp"
+            android:text="Add new month+year"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Spinner
-            android:id="@+id/select_month"
-            android:layout_margin="16dp"
+            android:id="@+id/select_budget_month"
+            android:layout_margin="8dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="6dp" />
+            android:layout_weight="1.25"
+            android:layout_height="wrap_content">
+        </Spinner>
 
-        <EditText
-            android:id="@+id/et_month"
-            android:inputType="text"
-            android:hint="Enter new month if needed"
-            android:textSize="12sp"
-            android:textAlignment="center"
+        <Spinner
+            android:id="@+id/select_new_month"
+            android:layout_margin="8dp"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content">
+        </Spinner>
+
+        <Spinner
+            android:id="@+id/select_new_year"
+            android:layout_margin="8dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+        </Spinner>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/month_button"
+        android:text="Enter new month"
+        android:onClick="submitNewMonth"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter Money to Save for the Week:"
+        android:paddingTop="32dp"
+        android:text="Enter Amount You Want to Save:"
+        android:textSize="24sp"
         android:layout_gravity="center"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp"
+        android:labelFor="@+id/et_saving" />
 
     <EditText
-        android:id="@+id/et_income"
+        android:id="@+id/et_saving"
         android:inputType="numberDecimal"
         android:layout_gravity="center"
         android:layout_width="256dp"
@@ -58,8 +90,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enter Amount You Want to Spend:"
+        android:textSize="24sp"
         android:layout_gravity="center"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="8dp"
+        android:labelFor="@+id/et_budget" />
 
     <EditText
         android:id="@+id/et_budget"
@@ -72,8 +106,10 @@
         android:id="@+id/submit_budget_button"
         android:layout_marginTop="32dp"
         android:text="Submit Budget Info"
+        android:onClick="submitBudget"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 
 </LinearLayout>
