@@ -67,8 +67,8 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         // Call checkButtons to see if buttons should be enabled (will be disabled to start)
         checkButtons();
 
-        savingMoneyET = findViewById(R.id.et_budget);
-        spendingMoneyET = findViewById(R.id.et_saving);
+        savingMoneyET = findViewById(R.id.et_saving);
+        spendingMoneyET = findViewById(R.id.et_budget);
 
         // add TextWatcher to our EditTexts
         savingMoneyET.addTextChangedListener(textWatcher);
