@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dennisvoo.budgetapp.R;
-import com.example.dennisvoo.budgetapp.activity.InputActivity;
 import com.example.dennisvoo.budgetapp.model.BudgetMonth;
 import com.example.dennisvoo.budgetapp.model.Purchase;
 
@@ -25,6 +24,7 @@ import io.realm.*;
 public class MainActivity extends AppCompatActivity {
 
     private Realm realm;
+    BudgetMonth currentMonth;
 
     TextView todayDateTV;
     TextView moneyLeftTV;
@@ -56,10 +56,16 @@ public class MainActivity extends AppCompatActivity {
         // Set text to our TextView object
         todayDateTV = findViewById(com.example.dennisvoo.budgetapp.R.id.tv_todays_date);
         todayDateTV.setText(todayDate);
+        Toast.makeText(this, "hi",Toast.LENGTH_LONG).show();
 
-        // placeholder for money left in month. real amount is taken from current month's save amount
-
-        moneyLeft = 0.00;
+        currentMonth = findCurrentMonth();
+        if (currentMonth == null) {
+            // if we haven't made a BudgetMonth for current month, we'll just default to 0.00
+            moneyLeft = 0.00;
+        } else {
+            // otherwise we take the spending amount available for the current month
+            moneyLeft = currentMonth.getSpendingAmount();
+        }
         // formats our money_left string to display remaining funds
         moneyLeftFormatted = getString(com.example.dennisvoo.budgetapp.R.string.money_left, moneyLeft);
         moneyLeftTV = findViewById(com.example.dennisvoo.budgetapp.R.id.tv_money_left);
@@ -105,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 expendituresButton.setEnabled(false);
             } else {
                 expendituresButton.setEnabled(true);
-                // button is being enabled when just one edittext changes
+                // button is being enabled when just one editText changes
             }
         }
     };
@@ -121,17 +127,11 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
         String dateEntered = dateFormat.format(date);
 
-        int monthNum = Calendar.getInstance().get(Calendar.MONTH) + 1;
-        int yearNum = Calendar.getInstance().get(Calendar.YEAR);
-
-        String monthYearNum = combineMonthYear(monthNum,yearNum);
-
         // check if we have this month in budgetMonth database
-        RealmResults<BudgetMonth> budgetMonthResults = realm.where(BudgetMonth.class).
-                equalTo("monthNumber", monthYearNum).findAll();
+        currentMonth = findCurrentMonth();
 
-        // if user has not input this month, we cannot add the purchase
-        if (budgetMonthResults.size() == 0) {
+        // if current month is not in database, we cannot add the purchase
+        if (currentMonth == null) {
             Toast.makeText(this,
                     "Need to add current month first, click 'Set a budget for the week' button",
                     Toast.LENGTH_LONG).show();
@@ -144,10 +144,8 @@ public class MainActivity extends AppCompatActivity {
                     purchase.setDate(dateEntered);
                     purchase.setPurchaseAmount(dollarAmount);
                     purchase.setCategory(categoryET.getText().toString());
-                    // search for current month's BudgetMonth realm object in database
-                    BudgetMonth currentMonth = realm.where(BudgetMonth.class)
-                            .equalTo("monthNumber",monthYearNum).findFirst();
-                    // then we can add our newest purchase to that month's RealmList<Purchase>
+
+                    // we can add our newest purchase to this month's RealmList<Purchase>
                     currentMonth.addToPurchases(purchase);
                 }
             });
@@ -164,10 +162,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // private helper method that combines a month and year number to give our budgetMonth an ID
-    private String combineMonthYear(int month, int year) {
-        String m = Integer.toString(month);
-        String y = Integer.toString(year);
-        return y + "" + m;
+    // private helper method that combines current month+year number to give our budgetMonth an ID
+    private BudgetMonth findCurrentMonth() {
+        int monthNum = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        int yearNum = Calendar.getInstance().get(Calendar.YEAR);
+
+        String m = Integer.toString(monthNum);
+        String y = Integer.toString(yearNum);
+        String monthYearNum = y + "" + m;
+
+        // search for current month's BudgetMonth realm object in database
+        return realm.where(BudgetMonth.class)
+                .equalTo("monthNumber",monthYearNum).findFirst();
     }
 }
