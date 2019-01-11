@@ -53,23 +53,10 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM. dd, yyyy");
         String todayDate = dateFormat.format(date);
 
-        // Set text to our TextView object
+        // Set up TextView objects
         todayDateTV = findViewById(com.example.dennisvoo.budgetapp.R.id.tv_todays_date);
         todayDateTV.setText(todayDate);
-        Toast.makeText(this, "onCreate called",Toast.LENGTH_LONG).show();
-
-        currMonth = findCurrentMonth();
-        if (currMonth == null) {
-            // if we haven't made a BudgetMonth for current month, we'll just default to 0.00
-            moneyLeft = 0.00;
-        } else {
-            // otherwise we take the spending amount available for the current month
-            moneyLeft = currMonth.getSpendingAmount();
-        }
-        // formats our money_left string to display remaining funds
-        moneyLeftFormatted = getString(com.example.dennisvoo.budgetapp.R.string.money_left, moneyLeft);
         moneyLeftTV = findViewById(com.example.dennisvoo.budgetapp.R.id.tv_money_left);
-        moneyLeftTV.setText(moneyLeftFormatted);
 
         // disable expendituresButton on start as we need inputs to submit
         expendituresButton = findViewById(com.example.dennisvoo.budgetapp.R.id.expenditures_button);
@@ -80,6 +67,25 @@ public class MainActivity extends AppCompatActivity {
         // add TextWatcher to our EditTexts
         amountSpentET.addTextChangedListener(textWatcher);
         categoryET.addTextChangedListener(textWatcher);
+    }
+
+    // We override onResume to make sure that our Money Left for Month is always updated when we go
+    // back to MainActivity
+    @Override
+    protected void onResume() {
+        super.onResume();
+        currMonth = findCurrentMonth();
+        if (currMonth == null) {
+            // if we haven't made a BudgetMonth for current month, we'll just default to 0.00
+            moneyLeft = 0.00;
+        } else {
+            // otherwise we take the spending amount available for the current month
+            moneyLeft = currMonth.getSpendingAmount();
+        }
+
+        // formats our money_left string to display remaining funds
+        moneyLeftFormatted = getString(com.example.dennisvoo.budgetapp.R.string.money_left, moneyLeft);
+        moneyLeftTV.setText(moneyLeftFormatted);
     }
 
     /*
