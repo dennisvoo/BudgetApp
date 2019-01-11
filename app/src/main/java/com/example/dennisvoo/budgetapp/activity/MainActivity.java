@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         String dateEntered = dateFormat.format(date);
 
         // check if we have this month in budgetMonth database
-        currentMonth = findCurrentMonth();
+        currMonth = findCurrentMonth();
 
         // if current month is not in database, we cannot add the purchase
         if (currMonth == null) {
