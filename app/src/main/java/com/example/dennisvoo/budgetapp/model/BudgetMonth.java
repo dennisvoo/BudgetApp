@@ -2,7 +2,6 @@ package com.example.dennisvoo.budgetapp.model;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.RealmResults;
 import io.realm.annotations.Required;
 
 public class BudgetMonth extends RealmObject {
@@ -27,17 +26,13 @@ public class BudgetMonth extends RealmObject {
         return monthNumber;
     }
 
-    public void setMonthNumber(String monthNumber) {
-        this.monthNumber = monthNumber;
-    }
+    public void setMonthNumber(String monthNumber) { this.monthNumber = monthNumber; }
 
     public double getAmountSaved() {
         return amountSaved;
     }
 
-    public void setAmountSaved(double amountSaved) {
-        this.amountSaved = amountSaved;
-    }
+    public void setAmountSaved(double amountSaved) { this.amountSaved = amountSaved; }
 
     public double getSpendingAmount() {
         return spendingAmount;
@@ -51,9 +46,7 @@ public class BudgetMonth extends RealmObject {
         return purchases;
     }
 
-    public void setPurchases(RealmList<Purchase> purchases) {
-        this.purchases = purchases;
-    }
+    public void setPurchases(RealmList<Purchase> purchases) { this.purchases = purchases; }
 
     public void addToPurchases(Purchase purchase) { this.purchases.add(purchase); }
 
