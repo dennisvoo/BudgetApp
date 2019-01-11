@@ -1,7 +1,5 @@
-package com.example.dennisvoo.budgetapp;
+package com.example.dennisvoo.budgetapp.activity;
 
-import android.app.Activity;
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,15 +10,23 @@ import android.widget.Button;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.ListPopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.dennisvoo.budgetapp.R;
+import com.example.dennisvoo.budgetapp.model.BudgetMonth;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
+
 public class InputActivity extends AppCompatActivity implements OnItemSelectedListener {
+
+    private Realm realm;
 
     EditText savingMoneyET;
     EditText spendingMoneyET;
@@ -37,12 +43,15 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
     Boolean newMonthChosen = false; // corresponds to second spinner from left
     Boolean newYearChosen = false; // corresponds to final spinner from left
 
+    ArrayList<String> budgetMonths = new ArrayList<>();
     ArrayList<String> years = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
+
+        realm = Realm.getDefaultInstance();
 
         // Set up the spinners
         createBudgetMonthSpinner();
@@ -70,9 +79,20 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
     private void createBudgetMonthSpinner() {
         budgetMonthSpinner = findViewById(R.id.select_budget_month);
 
-        // Create ArrayAdapter from months array in strings.xml
-        ArrayAdapter<CharSequence> budgetMonthAdapter = ArrayAdapter.createFromResource(this,
-                R.array.months, android.R.layout.simple_spinner_item);
+        // gives us a list of months from submitNewMonth and sorts them in chronological order
+        RealmResults<BudgetMonth> listOfMonths =
+                realm.where(BudgetMonth.class).sort("monthNumber").findAll();
+
+        // clear list on each method call so we avoid repeats
+        budgetMonths.clear();
+        budgetMonths.add("");
+        for (int i = 0; i < listOfMonths.size(); i++) {
+            budgetMonths.add(listOfMonths.get(i).getName());
+        }
+
+        // now create ArrayAdapter for budget months spinner
+        ArrayAdapter<String> budgetMonthAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, budgetMonths);
         budgetMonthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         budgetMonthSpinner.setAdapter(budgetMonthAdapter);
         budgetMonthSpinner.setOnItemSelectedListener(this);
@@ -177,22 +197,18 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         switch (parent.getId()) {
 
             case R.id.select_budget_month:
-                Toast.makeText(this, parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
-                String monthSelection = budgetMonthSpinner.getSelectedItem().toString();
-
+                String monthSelection = budgetMonthSpinner.getSelectedItem().toString().trim();
 
                 budgetMonthChosen = !monthSelection.equals("");
                 break;
 
             case R.id.select_new_month:
-                Toast.makeText(this, parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
                 String newMonthSelection = parent.getItemAtPosition(pos).toString();
 
                 newMonthChosen = !newMonthSelection.equals("");
                 break;
 
             case R.id.select_new_year:
-                Toast.makeText(this, parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
                 String newYearSelection = parent.getItemAtPosition(pos).toString();
 
                 newYearChosen = !newYearSelection.equals("");
@@ -233,13 +249,76 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         // take getSelectedItem().toString() for each spinner and combine, then add combo to first
         // spinner selection *database*
 
+        String chosenMonth = newMonthSpinner.getSelectedItem().toString();
+        int monthNumber = newMonthSpinner.getSelectedItemPosition();
+        String chosenYear = newYearSpinner.getSelectedItem().toString();
+
+        int yearNum = Integer.parseInt(chosenYear);
+        String monthYearNum = combineMonthYear(monthNumber, yearNum);
+
+        // search if we have entered our month yet
+        RealmResults<BudgetMonth> budgetMonthResults = realm.where(BudgetMonth.class).
+                equalTo("name", chosenMonth + " " + chosenYear).findAll();
+
+        // if search returns an entry we notify user the month has already been added
+        if (budgetMonthResults.size() > 0) {
+            Toast.makeText(this, "Month already added!", Toast.LENGTH_SHORT).show();
+        } else {
+            // otherwise we add month to our database
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    BudgetMonth budgetMonth = realm.createObject(BudgetMonth.class);
+                    budgetMonth.setName(chosenMonth + " " + chosenYear);
+                    budgetMonth.setMonthNumber(monthYearNum);
+                    budgetMonth.setAmountSaved(0.00);
+                    budgetMonth.setSpendingAmount(0.00);
+                    budgetMonth.setPurchases(new RealmList<>());
+                }
+            });
+
+            // reset the spinners involved
+            newMonthSpinner.setSelection(0);
+            newYearSpinner.setSelection(0);
+        }
+
+        // call this every time we add a month so we can update our budget month spinner
+        createBudgetMonthSpinner();
+
     }
 
     /*
      * This method takes the month (including year) in the first spinner
      */
     public void submitBudget(View view) {
-        // take first spinner selection and amounts from each EditText and modify database
+        // get current entries from budgetMonthSpinner and the two EditTexts
+        String budgetMonthName = budgetMonthSpinner.getSelectedItem().toString();
+        double saveAmount = Double.parseDouble(savingMoneyET.getText().toString());
+        double spendAmount = Double.parseDouble(spendingMoneyET.getText().toString());
+
+        // search for the budgetMonth in database that corresponds to our currBudgetMonth string
+        BudgetMonth currMonth = realm.where(BudgetMonth.class)
+                .equalTo("name", budgetMonthName).findFirst();
+        // update amount saved and spending amount for the current month
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                currMonth.setAmountSaved(currMonth.getAmountSaved() + saveAmount);
+                currMonth.setSpendingAmount(currMonth.getSpendingAmount() + spendAmount);
+            }
+        });
+
+        // reset budgetMonth spinner and EditTexts
+        budgetMonthSpinner.setSelection(0);
+        savingMoneyET.setText("");
+        spendingMoneyET.setText("");
+    }
+
+    // private helper method that combines a month and year number to give our budgetMonth an ID
+    private String combineMonthYear(int month, int year) {
+        String m = Integer.toString(month);
+        String y = Integer.toString(year);
+        return y + "" + m;
     }
 
 }
