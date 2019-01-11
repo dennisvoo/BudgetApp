@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // Set text to our TextView object
         todayDateTV = findViewById(com.example.dennisvoo.budgetapp.R.id.tv_todays_date);
         todayDateTV.setText(todayDate);
-        Toast.makeText(this, "hi",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "onCreate called",Toast.LENGTH_LONG).show();
 
         currMonth = findCurrentMonth();
         if (currMonth == null) {
@@ -137,6 +137,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         } else {
             // we can add the purchase otherwise
+
+            // update how much money is left to spend for the month
+            moneyLeft = moneyLeft - dollarAmount;
+            moneyLeftFormatted = getString(R.string.money_left, moneyLeft);
+            moneyLeftTV.setText(moneyLeftFormatted);
+
+            // then update on Realm
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
@@ -145,15 +152,12 @@ public class MainActivity extends AppCompatActivity {
                     purchase.setPurchaseAmount(dollarAmount);
                     purchase.setCategory(categoryET.getText().toString());
 
+                    // update spending amount for the month
+                    currMonth.setSpendingAmount(moneyLeft);
                     // we can add our newest purchase to this month's RealmList<Purchase>
                     currMonth.addToPurchases(purchase);
                 }
             });
-
-            // update how much money is left to spend for the month
-            moneyLeft = moneyLeft - dollarAmount;
-            moneyLeftFormatted = getString(R.string.money_left, moneyLeft);
-            moneyLeftTV.setText(moneyLeftFormatted);
 
             // clear out fields after entering
             amountSpentET.setText("");
