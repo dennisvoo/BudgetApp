@@ -24,7 +24,7 @@ import io.realm.*;
 public class MainActivity extends AppCompatActivity {
 
     private Realm realm;
-    BudgetMonth currentMonth;
+    BudgetMonth currMonth;
 
     TextView todayDateTV;
     TextView moneyLeftTV;
@@ -58,13 +58,13 @@ public class MainActivity extends AppCompatActivity {
         todayDateTV.setText(todayDate);
         Toast.makeText(this, "hi",Toast.LENGTH_LONG).show();
 
-        currentMonth = findCurrentMonth();
-        if (currentMonth == null) {
+        currMonth = findCurrentMonth();
+        if (currMonth == null) {
             // if we haven't made a BudgetMonth for current month, we'll just default to 0.00
             moneyLeft = 0.00;
         } else {
             // otherwise we take the spending amount available for the current month
-            moneyLeft = currentMonth.getSpendingAmount();
+            moneyLeft = currMonth.getSpendingAmount();
         }
         // formats our money_left string to display remaining funds
         moneyLeftFormatted = getString(com.example.dennisvoo.budgetapp.R.string.money_left, moneyLeft);
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         currentMonth = findCurrentMonth();
 
         // if current month is not in database, we cannot add the purchase
-        if (currentMonth == null) {
+        if (currMonth == null) {
             Toast.makeText(this,
                     "Need to add current month first, click 'Set a budget for the week' button",
                     Toast.LENGTH_LONG).show();
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     purchase.setCategory(categoryET.getText().toString());
 
                     // we can add our newest purchase to this month's RealmList<Purchase>
-                    currentMonth.addToPurchases(purchase);
+                    currMonth.addToPurchases(purchase);
                 }
             });
 
