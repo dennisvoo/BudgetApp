@@ -2,7 +2,6 @@ package com.example.dennisvoo.budgetapp.model;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Required;
-import java.util.Date;
 
 public class Purchase extends RealmObject {
 
