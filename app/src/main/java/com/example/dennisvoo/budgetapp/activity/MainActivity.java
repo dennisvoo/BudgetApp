@@ -107,6 +107,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(inputIntent);
     }
 
+    /*
+     * This method, paired with the progress_button via android:onClick, directs us to the
+     * ProgressActivity on click.
+     */
+    public void checkProgress(View view) {
+        Intent progressIntent = new Intent(this, ProgressActivity.class);
+        startActivity(progressIntent);
+    }
+
     // override textWatcher to check if EditText is empty or not
     TextWatcher textWatcher = new TextWatcher() {
         @Override
