@@ -1,11 +1,15 @@
 package com.example.dennisvoo.budgetapp.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.*;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -64,9 +68,15 @@ public class MainActivity extends AppCompatActivity {
 
         amountSpentET = findViewById(com.example.dennisvoo.budgetapp.R.id.et_amount);
         categoryET = findViewById(com.example.dennisvoo.budgetapp.R.id.et_category);
-        // add TextWatcher to our EditTexts
+        // add TextWatcher and onFocusChangeListener to our ET's
         amountSpentET.addTextChangedListener(textWatcher);
         categoryET.addTextChangedListener(textWatcher);
+
+        // add touch listener to parent layout of activity and to buttons
+        findViewById(R.id.main_layout).setOnTouchListener(touchListen);
+        findViewById(R.id.input_button).setOnTouchListener(touchListen);
+        findViewById(R.id.progress_button).setOnTouchListener(touchListen);
+        expendituresButton.setOnTouchListener(touchListen);
     }
 
     // We override onResume to make sure that our Money Left for Month is always updated when we go
@@ -97,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(inputIntent);
     }
 
+    // override textWatcher to check if EditText is empty or not
     TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -119,6 +130,22 @@ public class MainActivity extends AppCompatActivity {
                 expendituresButton.setEnabled(true);
                 // button is being enabled when just one editText changes
             }
+        }
+    };
+
+    // override OnTouchListener to hide ET keyboard when user clicks away from keyboard
+    OnTouchListener touchListen = new OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (amountSpentET.isFocused()) {
+                amountSpentET.clearFocus();
+                hideKeyboard(amountSpentET);
+            }
+            if (categoryET.isFocused()) {
+                categoryET.clearFocus();
+                hideKeyboard(categoryET);
+            }
+            return false;
         }
     };
 
@@ -184,5 +211,11 @@ public class MainActivity extends AppCompatActivity {
         // search for current month's BudgetMonth realm object in database
         return realm.where(BudgetMonth.class)
                 .equalTo("monthNumber",monthYearNum).findFirst();
+    }
+
+    // method used to hide keyboard from EditTexts when user clicks out of keyboard
+    public void hideKeyboard(View view) {
+        InputMethodManager iMM =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        iMM.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

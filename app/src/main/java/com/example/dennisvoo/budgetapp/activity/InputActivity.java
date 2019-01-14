@@ -1,8 +1,12 @@
 package com.example.dennisvoo.budgetapp.activity;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.*;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -53,6 +57,9 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
 
         realm = Realm.getDefaultInstance();
 
+        // add touch listener to parent layout of activity
+        findViewById(R.id.input_layout).setOnTouchListener(touchListen);
+
         // Set up the spinners
         createBudgetMonthSpinner();
         createNewMonthSpinner();
@@ -62,6 +69,7 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         adjustPopUpWindow();
 
         submitMonth = findViewById(R.id.month_button);
+        submitMonth.setOnTouchListener(touchListen);
         submitBudget = findViewById(R.id.submit_budget_button);
 
         // Call checkButtons to see if buttons should be enabled (will be disabled to start)
@@ -69,13 +77,13 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
 
         savingMoneyET = findViewById(R.id.et_saving);
         spendingMoneyET = findViewById(R.id.et_budget);
-
         // add TextWatcher to our EditTexts
         savingMoneyET.addTextChangedListener(textWatcher);
         spendingMoneyET.addTextChangedListener(textWatcher);
 
     }
 
+    // creates spinner of budgetMonths using an Arraylist of budgetMonth realm objects
     private void createBudgetMonthSpinner() {
         budgetMonthSpinner = findViewById(R.id.select_budget_month);
 
@@ -96,8 +104,11 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         budgetMonthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         budgetMonthSpinner.setAdapter(budgetMonthAdapter);
         budgetMonthSpinner.setOnItemSelectedListener(this);
+        // add a click listener to spinner
+        budgetMonthSpinner.setOnTouchListener(touchListen);
     }
 
+    // creates spinner of months using an array of month strings
     private void createNewMonthSpinner() {
         newMonthSpinner = findViewById(R.id.select_new_month);
 
@@ -107,8 +118,10 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         newMonthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newMonthSpinner.setAdapter(newMonthAdapter);
         newMonthSpinner.setOnItemSelectedListener(this);
+        newMonthSpinner.setOnTouchListener(touchListen);
     }
 
+    // creates spinner of recent years made from iterating an arraylist from 2018 to present year
     private void createNewYearSpinner() {
         newYearSpinner = findViewById(R.id.select_new_year);
 
@@ -124,8 +137,10 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         newYearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newYearSpinner.setAdapter(newYearAdapter);
         newYearSpinner.setOnItemSelectedListener(this);
+        newYearSpinner.setOnTouchListener(touchListen);
     }
 
+    // code to adjust the popup window made when user opens up a spinner
     private void adjustPopUpWindow() {
         /*
          * Try catch block to limit size of popup window from selecting each spinner and allowing
@@ -167,6 +182,7 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         }
     }
 
+    // override textWatcher to see if entry has been made in both ET's
     TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -190,7 +206,23 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         }
     };
 
+    // override OnTouchListener to hide ET keyboard when user clicks away from keyboard
+    OnTouchListener touchListen = new OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            if (savingMoneyET.isFocused()) {
+                savingMoneyET.clearFocus();
+                hideKeyboard(savingMoneyET);
+            }
+            if (spendingMoneyET.isFocused()) {
+                spendingMoneyET.clearFocus();
+                hideKeyboard(spendingMoneyET);
+            }
+            return false;
+        }
+    };
 
+    // override onItemSelected to check if a selection has been made in each spinner
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
@@ -218,7 +250,6 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         // call checkButtons on each onItemSelected instance
         checkButtons();
     }
-
     public void onNothingSelected(AdapterView<?> parent) {}
 
     /*
@@ -321,4 +352,9 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         return y + "" + m;
     }
 
+    // method used to hide keyboard from EditTexts when user clicks out of keyboard
+    public void hideKeyboard(View view) {
+        InputMethodManager iMM =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        iMM.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/input_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
     tools:context=".activity.InputActivity">
 
     <LinearLayout
@@ -62,6 +65,7 @@
     <Button
         android:id="@+id/month_button"
         android:text="Enter new month"
+        android:focusableInTouchMode="true"
         android:onClick="submitNewMonth"
         android:layout_gravity="end"
         android:layout_width="wrap_content"
@@ -81,6 +85,7 @@
     <EditText
         android:id="@+id/et_saving"
         android:inputType="numberDecimal"
+        android:imeOptions="actionNext"
         android:layout_gravity="center"
         android:layout_width="256dp"
         android:layout_height="wrap_content" />
@@ -98,6 +103,7 @@
     <EditText
         android:id="@+id/et_budget"
         android:inputType="numberDecimal"
+        android:imeOptions="actionDone"
         android:layout_gravity="center"
         android:layout_width="256dp"
         android:layout_height="wrap_content" />
