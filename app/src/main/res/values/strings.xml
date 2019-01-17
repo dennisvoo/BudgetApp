@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">BudgetApp</string>
     <string name="money_left">Money Left for Month: $%1$.2f</string>
+    <string name="action_jump">Jump to Today</string>
+    <string name="money_spent_month">Amount Spent This Month: $%1$.2f</string>
+    <string name="on_budget_state">On Budget: %s</string>
+
     <string-array name="months">
         <item> </item>
         <item>January</item>
