@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         Date date = new Date();
 
         // Format the current date into a standard format: Day of Week, Month Day, Year
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM. dd, yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM. d, yyyy");
         String todayDate = dateFormat.format(date);
 
         // Set up TextView objects
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         dollarAmount = Double.parseDouble(amountSpentET.getText().toString());
 
         Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss z");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy");
         String dateEntered = dateFormat.format(date);
 
         // check if we have this month in budgetMonth database
