@@ -11,12 +11,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dennisvoo.budgetapp.R;
+import com.example.dennisvoo.budgetapp.model.BudgetMonth;
+import com.example.dennisvoo.budgetapp.model.Purchase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class ProgressActivity extends AppCompatActivity implements DayAdapter.DayAdapterOnClickHandler {
 
@@ -25,6 +28,7 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
     LinearLayoutManager layoutManager;
 
     String[] monthProgress;
+    Double[] dailyAmountSpent;
 
     private Realm realm;
 
@@ -69,7 +73,6 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
         cal.setTime(date);
         cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.HOUR, 0);
-        cal.set(Calendar.MINUTE,0);
         date = cal.getTime();
 
         // format date into a string format
@@ -80,13 +83,30 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
         int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         monthProgress = new String[daysInMonth];
 
+        // create an array of doubles w/ same size to hold total amount spent on each day
+        dailyAmountSpent = new Double[daysInMonth];
+
         // iterate through days of month to fill monthProgress array
         while (currMonth == cal.get(Calendar.MONTH)) {
-            String currDay = dateFormat.format(date);
-            monthProgress[cal.get(Calendar.DAY_OF_MONTH) -  1] = currDay + " " + "Amount spent:";
+            // set up date string to match dates of Purchase RealmObject
+            String todayStr = dateFormat.format(date);
+
+            // search for purchases with dates on same day as our date string
+            RealmResults<Purchase> purchasesInDay =
+                    realm.where(Purchase.class).contains("date", todayStr).findAll();
+
+            int indexOfDay = cal.get(Calendar.DAY_OF_MONTH) - 1;
+
+            dailyAmountSpent[indexOfDay] =
+                    purchasesInDay.sum("purchaseAmount").doubleValue();
+            monthProgress[indexOfDay] =
+                    todayStr + " " + "Amount spent: $" + dailyAmountSpent[indexOfDay];
             cal.add(Calendar.DAY_OF_MONTH, 1);
             date = cal.getTime();
         }
+
+        // determine if user is on budget with array of daily amount spent
+        determineIfUserOnBudget(dailyAmountSpent);
 
         dayAdapter.setMonthProgress(monthProgress);
         // set scroll position to current day
@@ -130,11 +150,67 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
     }
 
     /*
-     * helper method that sets recyclerview scroll position to the current day
+     * helper method that sets RecyclerView scroll position to the current day
      */
     private void setToToday() {
         Calendar cal = Calendar.getInstance();
         int currDay = cal.get(Calendar.DAY_OF_MONTH) - 1;
         layoutManager.scrollToPositionWithOffset(currDay,0);
     }
+
+    /**
+     * Takes in the amount of doubles corresponding to daily amount spent. Adds up the doubles in
+     * array and displays in header the amount calculated and whether or not the user is on budget.
+     */
+    private void determineIfUserOnBudget(Double[] amounts) {
+        moneySpentMonth = 0.00;
+
+        // iterate through array and add up double amounts
+        for (double tmp : amounts) {
+            moneySpentMonth = moneySpentMonth + tmp;
+        }
+
+        // Set up first TextView in header with string formatting and moneySpentMonth
+        moneySpentMonthTV = findViewById(R.id.tv_money_spent_month);
+        moneySpentMonthFormatted = getString(R.string.money_spent_month, moneySpentMonth);
+        moneySpentMonthTV.setText(moneySpentMonthFormatted);
+
+        // now calculate whether user was on budget by finding available spending for month and
+        // calculating how much money user could have spent by current day and still be on budget
+
+        // find current month
+        Calendar cal = Calendar.getInstance();
+        int monthNum = cal.get(Calendar.MONTH) + 1;
+        int yearNum = cal.get(Calendar.YEAR);
+
+        String m = Integer.toString(monthNum);
+        String y = Integer.toString(yearNum);
+        String monthYearNum = y + "" + m;
+        BudgetMonth currMonth = realm.where(BudgetMonth.class)
+                .equalTo("monthNumber",monthYearNum).findFirst();
+
+        // now calculate total spending money for current month
+        double totalBudgetForMonth = currMonth.getSpendingAmount() + moneySpentMonth;
+
+        // find daily pace by dividing by number of days in month
+        double dailyPace = totalBudgetForMonth / cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        // check if user is on budget by calculating how much user could have spent by current day
+        // then compare to amount spent for month to see if user is on budget
+        int currDay = cal.get(Calendar.DAY_OF_MONTH);
+        if ((dailyPace * currDay) >= moneySpentMonth) {
+            onBudget = true;
+        } else {
+            onBudget = false;
+        }
+
+        // then set up on budget TextView
+        onBudgetTV = findViewById(R.id.tv_on_budget);
+        if (onBudget) {
+            onBudgetFormatted = getString(R.string.on_budget_state, "Yes");
+        } else {
+            onBudgetFormatted = getString(R.string.on_budget_state, "No");
+        }
+        onBudgetTV.setText(onBudgetFormatted);
+    }
+
 }
