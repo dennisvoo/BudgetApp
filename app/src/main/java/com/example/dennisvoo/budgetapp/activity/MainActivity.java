@@ -112,8 +112,16 @@ public class MainActivity extends AppCompatActivity {
      * ProgressActivity on click.
      */
     public void checkProgress(View view) {
-        Intent progressIntent = new Intent(this, ProgressActivity.class);
-        startActivity(progressIntent);
+        currMonth = findCurrentMonth();
+        
+        if (currMonth == null) {
+            Toast.makeText(this,
+                    "Need to add current month first, click 'Set a budget for the week' button",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Intent progressIntent = new Intent(this, ProgressActivity.class);
+            startActivity(progressIntent);
+        }
     }
 
     // override textWatcher to check if EditText is empty or not
