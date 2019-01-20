@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clickable="true"
+    android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context=".activity.MainActivity">
 
@@ -26,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="inputMe"
-        android:text="Set a budget for the week" />
+        android:text="@string/input_button_txt" />
 
     <Button
         android:id="@+id/progress_button"
@@ -34,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="checkProgress"
-        android:text="Track Progress for the Month" />
+        android:text="@string/progress_button_txt" />
 
     <TextView
         android:id="@+id/tv_money_left"
@@ -52,7 +53,7 @@
         android:layout_height="100dp">
 
         <TextView
-            android:text="Enter expenditures:"
+            android:text="@string/enter_expenditures"
             android:textSize="20sp"
             android:textAlignment="center"
             android:layout_width="0dp"
@@ -66,7 +67,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:text="Amount (in $)"
+                android:text="@string/amount_in_dollars"
                 android:textSize="16sp"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
@@ -90,7 +91,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:text="Category"
+                android:text="@string/category"
                 android:textSize="16sp"
                 android:textAlignment="center"
                 android:layout_width="match_parent"
@@ -112,8 +113,8 @@
     <Button
         android:id="@+id/expenditures_button"
         android:onClick="submitExpenditures"
-        android:text="Submit Expenditure"
-        android:layout_gravity="right"
+        android:text="@string/expenditures_button_txt"
+        android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

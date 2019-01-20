@@ -1,10 +1,22 @@
 <resources>
     <string name="app_name">BudgetApp</string>
-    <string name="money_left">Money Left for Month: $%1$.2f</string>
-    <string name="action_jump">Jump to Today</string>
-    <string name="money_spent_month">$%1$.2f Spent This Month</string>
-    <string name="on_budget_state">On Budget: %s</string>
 
+    <!-- Main Activity Strings -->
+    <string name="input_button_txt">Set a budget for the week</string>
+    <string name="progress_button_txt">Track Progress for the Month</string>
+    <string name="money_left">Money Left for Month: $%1$.2f</string>
+    <string name="enter_expenditures">Enter expenditures:</string>
+    <string name="amount_in_dollars">Amount (in $)</string>
+    <string name="category">Category</string>
+    <string name="expenditures_button_txt">Submit Expenditure</string>
+
+    <!-- Input Activity Strings -->
+    <string name="month_choice_txt">Choose month</string>
+    <string name="new_month_year_txt">Add new month+year</string>
+    <string name="month_button_txt">Enter new month</string>
+    <string name="enter_save_amount">Enter Amount You Want to Save:</string>
+    <string name="enter_spend_amount">Enter Amount You Want to Spend:</string>
+    <string name="budget_button_txt">Submit Budget Info</string>
     <string-array name="months">
         <item> </item>
         <item>January</item>
@@ -20,4 +32,12 @@
         <item>November</item>
         <item>December</item>
     </string-array>
+
+    <!-- Progress Activity Strings -->
+    <string name="money_spent_month">$%1$.2f Spent This Month</string>
+    <string name="on_budget_state">On Budget: %s</string>
+
+    <!-- Menu Strings -->
+    <string name="action_jump">Jump to Today</string>
+
 </resources>

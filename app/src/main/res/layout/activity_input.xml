@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clickable="true"
+    android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context=".activity.InputActivity">
 
@@ -18,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="4dp"
-            android:text="Choose month"
+            android:text="@string/month_choice_txt"
             android:textSize="20sp"/>
         
         <TextView
@@ -27,7 +28,7 @@
             android:gravity="end"
             android:textAlignment="gravity"
             android:layout_marginEnd="4dp"
-            android:text="Add new month+year"
+            android:text="@string/new_month_year_txt"
             android:textSize="20sp"/>
     </LinearLayout>
 
@@ -64,8 +65,7 @@
 
     <Button
         android:id="@+id/month_button"
-        android:text="Enter new month"
-        android:focusableInTouchMode="true"
+        android:text="@string/month_button_txt"
         android:onClick="submitNewMonth"
         android:layout_gravity="end"
         android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="32dp"
-        android:text="Enter Amount You Want to Save:"
+        android:text="@string/enter_save_amount"
         android:textSize="24sp"
         android:layout_gravity="center"
         android:paddingBottom="8dp"
@@ -94,7 +94,7 @@
         android:paddingTop="48dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter Amount You Want to Spend:"
+        android:text="@string/enter_spend_amount"
         android:textSize="24sp"
         android:layout_gravity="center"
         android:paddingBottom="8dp"
@@ -111,7 +111,7 @@
     <Button
         android:id="@+id/submit_budget_button"
         android:layout_marginTop="32dp"
-        android:text="Submit Budget Info"
+        android:text="@string/budget_button_txt"
         android:onClick="submitBudget"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
