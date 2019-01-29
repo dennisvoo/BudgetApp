@@ -37,6 +37,10 @@
     <string name="money_spent_month">$%1$.2f Spent This Month</string>
     <string name="on_budget_state">On Budget: %s</string>
 
+    <!-- Expenditures Activity Strings -->
+    <string name="category_header">Category</string>
+    <string name="amount_header">Amount (in $)</string>
+
     <!-- Menu Strings -->
     <string name="action_jump">Jump to Today</string>
 

@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.InputActivity" />
-        <activity android:name=".activity.ProgressActivity"></activity>
+        <activity android:name=".activity.ProgressActivity" />
+        <activity android:name=".activity.ExpendituresActivity"></activity>
     </application>
 
 </manifest>

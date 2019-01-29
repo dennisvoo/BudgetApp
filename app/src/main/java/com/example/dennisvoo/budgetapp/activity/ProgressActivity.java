@@ -1,14 +1,15 @@
 package com.example.dennisvoo.budgetapp.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.dennisvoo.budgetapp.R;
 import com.example.dennisvoo.budgetapp.model.BudgetMonth;
@@ -118,8 +119,15 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
      * purchases
      */
     public void onClick(String dayData) {
-        // set it to clickable. create intent and send to list of purchases.
-        Toast.makeText(this, dayData,Toast.LENGTH_SHORT).show();
+        // Cut string at end of date portion
+        String clickedDate = dayData.split(" Amount")[0];
+
+        // create intent to send to ExpendituresActivity with date clickedDate string as extra
+        Intent expendIntent = new Intent(this, ExpendituresActivity.class);
+        expendIntent.putExtra("date", clickedDate);
+        // start intent whenever user clicks a DayViewHolder
+        startActivity(expendIntent);
+
     }
 
     /**
