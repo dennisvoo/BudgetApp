@@ -31,11 +31,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#dadada"/>
-
         <TextView
             android:id="@+id/tv_amt_header"
             android:text="@string/amount_header"
