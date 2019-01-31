@@ -193,7 +193,7 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
 
         String m = Integer.toString(monthNum);
         String y = Integer.toString(yearNum);
-        String monthYearNum = y + "" + m;
+        String monthYearNum = y + m;
         BudgetMonth currMonth = realm.where(BudgetMonth.class)
                 .equalTo("monthNumber",monthYearNum).findFirst();
 
