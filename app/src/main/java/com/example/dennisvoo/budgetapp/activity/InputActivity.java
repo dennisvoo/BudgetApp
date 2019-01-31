@@ -343,7 +343,7 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
     private String combineMonthYear(int month, int year) {
         String m = Integer.toString(month);
         String y = Integer.toString(year);
-        return y + "" + m;
+        return y + m;
     }
 
     // method used to hide keyboard from EditTexts when user clicks out of keyboard
