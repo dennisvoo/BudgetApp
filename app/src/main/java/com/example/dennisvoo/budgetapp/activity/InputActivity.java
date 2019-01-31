@@ -296,16 +296,13 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
             Toast.makeText(this, "Month already added!", Toast.LENGTH_SHORT).show();
         } else {
             // otherwise we add month to our database
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    BudgetMonth budgetMonth = realm.createObject(BudgetMonth.class);
-                    budgetMonth.setName(chosenMonth + " " + chosenYear);
-                    budgetMonth.setMonthNumber(monthYearNum);
-                    budgetMonth.setAmountSaved(0.00);
-                    budgetMonth.setSpendingAmount(0.00);
-                    budgetMonth.setPurchases(new RealmList<>());
-                }
+            realm.executeTransaction((realm) -> {
+                BudgetMonth budgetMonth = realm.createObject(BudgetMonth.class);
+                budgetMonth.setName(chosenMonth + " " + chosenYear);
+                budgetMonth.setMonthNumber(monthYearNum);
+                budgetMonth.setAmountSaved(0.00);
+                budgetMonth.setSpendingAmount(0.00);
+                budgetMonth.setPurchases(new RealmList<>());
             });
 
             // reset the spinners involved
@@ -331,12 +328,9 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         BudgetMonth currMonth = realm.where(BudgetMonth.class)
                 .equalTo("name", budgetMonthName).findFirst();
         // update amount saved and spending amount for the current month
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                currMonth.setAmountSaved(currMonth.getAmountSaved() + saveAmount);
-                currMonth.setSpendingAmount(currMonth.getSpendingAmount() + spendAmount);
-            }
+        realm.executeTransaction((realm) -> {
+            currMonth.setAmountSaved(currMonth.getAmountSaved() + saveAmount);
+            currMonth.setSpendingAmount(currMonth.getSpendingAmount() + spendAmount);
         });
 
         // reset budgetMonth spinner and EditTexts
