@@ -10,8 +10,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.*;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,13 +23,15 @@ import com.example.dennisvoo.budgetapp.R;
 import com.example.dennisvoo.budgetapp.model.BudgetMonth;
 import com.example.dennisvoo.budgetapp.model.Purchase;
 
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import io.realm.*;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnItemSelectedListener {
 
     private Realm realm;
     BudgetMonth currMonth;
@@ -42,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     Button expendituresButton;
 
     double dollarAmount;
+
+    Spinner summarySpinner;
+    ArrayList<String> summaries = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +88,10 @@ public class MainActivity extends AppCompatActivity {
         expendituresButton.setOnTouchListener(touchListen);
     }
 
-    // We override onResume to make sure that our Money Left for Month is always updated when we go
-    // back to MainActivity
+    /*
+     * We override onResume to make sure that our Money Left for Month is always updated when we go
+     * back to MainActivity
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -96,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
         // formats our money_left string to display remaining funds
         moneyLeftFormatted = getString(com.example.dennisvoo.budgetapp.R.string.money_left, moneyLeft);
         moneyLeftTV.setText(moneyLeftFormatted);
+
+        // set up spinner of summary months and adjust its pop-up window
+        createSummarySpinner();
+        adjustPopUpWindow();
     }
 
     /*
@@ -194,19 +209,14 @@ public class MainActivity extends AppCompatActivity {
             moneyLeftTV.setText(moneyLeftFormatted);
 
             // then update on Realm
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    Purchase purchase = realm.createObject(Purchase.class);
-                    purchase.setDate(dateEntered);
-                    purchase.setPurchaseAmount(dollarAmount);
-                    purchase.setCategory(categoryET.getText().toString());
+            realm.executeTransaction((realm) -> {
+                String cat = categoryET.getText().toString().trim();
+                Purchase purchase = new Purchase(dateEntered, dollarAmount, cat);
 
-                    // update spending amount for the month
-                    currMonth.setSpendingAmount(moneyLeft);
-                    // we can add our newest purchase to this month's RealmList<Purchase>
-                    currMonth.addToPurchases(purchase);
-                }
+                // update spending amount for the month
+                currMonth.setSpendingAmount(moneyLeft);
+                // we can add our newest purchase to this month's RealmList<Purchase>
+                currMonth.addToPurchases(purchase);
             });
 
             // clear out fields after entering
@@ -216,21 +226,90 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // private helper method that combines current month+year number to give our budgetMonth an ID
+    /*
+     * This method creates spinner for the summary of all BudgetMonths in database.
+     */
+    private void createSummarySpinner() {
+        summarySpinner = findViewById(R.id.select_summary);
+
+        // gives us a list of months from submitNewMonth and sorts them in chronological order
+        RealmResults<BudgetMonth> listOfMonths =
+                realm.where(BudgetMonth.class).sort("monthNumber").findAll();
+
+        // clear list on each method call so we avoid repeats
+        summaries.clear();
+        summaries.add("");
+        for (int i = 0; i < listOfMonths.size(); i++) {
+            summaries.add(listOfMonths.get(i).getName());
+        }
+
+        // now create ArrayAdapter for budget months spinner
+        ArrayAdapter<String> summaryAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, summaries);
+        summaryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        summarySpinner.setAdapter(summaryAdapter);
+        summarySpinner.setOnItemSelectedListener(this);
+    }
+
+    // override onItemSelected handle sending user to SummaryActivity
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        String summarySelection = parent.getSelectedItem().toString().trim();
+
+        if (summarySelection != "") {
+            Intent summaryIntent = new Intent(this, SummaryActivity.class);
+            summaryIntent.putExtra("name", summarySelection);
+            startActivity(summaryIntent);
+        }
+    }
+    public void onNothingSelected(AdapterView<?> parent) {}
+
+    /*
+     * Try catch block to limit size of popup window from the spinner and allowing
+     * user to scroll through options
+     */
+    private void adjustPopUpWindow() {
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            popup.setAccessible(true);
+
+            // Get private mPopup member variable and try cast to ListPopupWindow
+            android.widget.ListPopupWindow summaryPopUp =
+                    (android.widget.ListPopupWindow) popup.get(summarySpinner);
+
+            // Set popupWindow height to 750px or WRAP_CONTENT if that is smaller
+            if (summaryPopUp.WRAP_CONTENT < 750) {
+                summaryPopUp.setHeight(summaryPopUp.WRAP_CONTENT);
+            } else {
+                summaryPopUp.setHeight(750);
+            }
+
+        }
+        catch (NoClassDefFoundError | ClassCastException |
+                NoSuchFieldException | IllegalAccessException e) {
+            // silently fail...
+        }
+    }
+
+    /*
+     * private helper method that combines current month+year number to give our budgetMonth an ID
+     */
     private BudgetMonth findCurrentMonth() {
         int monthNum = Calendar.getInstance().get(Calendar.MONTH) + 1;
         int yearNum = Calendar.getInstance().get(Calendar.YEAR);
 
         String m = Integer.toString(monthNum);
         String y = Integer.toString(yearNum);
-        String monthYearNum = y + "" + m;
+        String monthYearNum = y + m;
 
         // search for current month's BudgetMonth realm object in database
         return realm.where(BudgetMonth.class)
                 .equalTo("monthNumber",monthYearNum).findFirst();
     }
 
-    // method used to hide keyboard from EditTexts when user clicks out of keyboard
+    /*
+     * method used to hide keyboard from EditTexts when user clicks out of keyboard
+     */
     public void hideKeyboard(View view) {
         InputMethodManager iMM =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         iMM.hideSoftInputFromWindow(view.getWindowToken(), 0);

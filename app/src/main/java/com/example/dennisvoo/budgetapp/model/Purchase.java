@@ -10,6 +10,23 @@ public class Purchase extends RealmObject {
     @Required
     private String category;
 
+    // Constructors
+    public Purchase() {
+        purchaseAmount = 0.00;
+        category = "";
+    }
+
+    public Purchase(double purchaseAmount, String category) {
+        this.purchaseAmount = purchaseAmount;
+        this.category = category;
+    }
+
+    public Purchase(String date, double purchaseAmount, String category) {
+        this.date = date;
+        this.purchaseAmount = purchaseAmount;
+        this.category = category;
+    }
+
     // Getters and setters for the member variables in model
     public String getDate() {
         return date;

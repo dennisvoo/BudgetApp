@@ -13,6 +13,23 @@ public class BudgetMonth extends RealmObject {
     private double spendingAmount;
     private RealmList<Purchase> purchases;
 
+    // Constructors
+    public BudgetMonth() {
+        name = "";
+        monthNumber = "";
+        amountSaved = 0.00;
+        spendingAmount = 0.00;
+        purchases = new RealmList<>();
+    }
+
+    public BudgetMonth(String name, String monthNumber) {
+        this.name = name;
+        this.monthNumber = monthNumber;
+        amountSaved = 0.00;
+        spendingAmount = 0.00;
+        purchases = new RealmList<>();
+    }
+
     // Getters and Setters for member variables in model
     public String getName() {
         return name;

@@ -297,12 +297,9 @@ public class InputActivity extends AppCompatActivity implements OnItemSelectedLi
         } else {
             // otherwise we add month to our database
             realm.executeTransaction((realm) -> {
-                BudgetMonth budgetMonth = realm.createObject(BudgetMonth.class);
-                budgetMonth.setName(chosenMonth + " " + chosenYear);
-                budgetMonth.setMonthNumber(monthYearNum);
-                budgetMonth.setAmountSaved(0.00);
-                budgetMonth.setSpendingAmount(0.00);
-                budgetMonth.setPurchases(new RealmList<>());
+                String monthName = chosenMonth + " " + chosenYear;
+                BudgetMonth budgetMonth = new BudgetMonth(monthName, monthYearNum);
+                realm.copyToRealm(budgetMonth);
             });
 
             // reset the spinners involved
