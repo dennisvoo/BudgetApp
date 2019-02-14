@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".activity.InputActivity" />
         <activity android:name=".activity.ProgressActivity" />
-        <activity android:name=".activity.ExpendituresActivity"></activity>
+        <activity android:name=".activity.ExpendituresActivity" />
+        <activity android:name=".activity.SummaryActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.SummaryActivity">
+
+    <TextView
+        android:id="@+id/tv_summary_title"
+        android:textSize="40sp"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingBottom="16dp" />
+
+    <TextView
+        android:id="@+id/tv_amt_spent_month"
+        android:text="@string/amt_spent_month"
+        android:textSize="22sp"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_net_spend_month"
+        android:text="@string/net_spend_month"
+        android:textSize="22sp"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/tv_net_spent_disclaimer"
+        android:text="@string/net_spend_disclaimer"
+        android:textSize="16sp"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_amt_saved_month"
+        android:text="@string/amt_saved_month"
+        android:textSize="22sp"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_amt_saved_total"
+        android:text="@string/amt_saved_total"
+        android:textSize="22sp"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_top3_header"
+        android:text="@string/top3_header"
+        android:textSize="22sp"
+        style="@style/TextAppearance.AppCompat"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_cat_header"
+            android:text="@string/category_header"
+            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp" />
+
+        <TextView
+            android:id="@+id/tv_amt_header"
+            android:text="@string/amount_header"
+            android:textSize="16sp"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp" />
+
+    </LinearLayout>
+
+    <GridView
+        android:id="@+id/top3"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="2">
+
+    </GridView>
+
+    <Button
+        android:id="@+id/daily_breakdown_button"
+        android:onClick="dailyBreakdown"
+        android:text="@string/daily_breakdown"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

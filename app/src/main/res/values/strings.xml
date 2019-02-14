@@ -9,6 +9,7 @@
     <string name="amount_in_dollars">Amount (in $)</string>
     <string name="category">Category</string>
     <string name="expenditures_button_txt">Submit Expenditure</string>
+    <string name="summary_spinner_txt">Summary for each month:</string>
 
     <!-- Input Activity Strings -->
     <string name="month_choice_txt">Choose month</string>
@@ -40,6 +41,15 @@
     <!-- Expenditures Activity Strings -->
     <string name="category_header">Category</string>
     <string name="amount_header">Amount (in $)</string>
+
+    <!-- Summary Activity Strings -->
+    <string name="amt_spent_month">Amount Spent this Month: $%1$.2f</string>
+    <string name="net_spend_month">Net Spending for Month: $%1$.2f</string>
+    <string name="net_spend_disclaimer">(This is added to save totals once month ends).</string>
+    <string name="amt_saved_month">Amount Saved this Month: $%1$.2f</string>
+    <string name="amt_saved_total">Amount Saved in Total: $%1$.2f</string>
+    <string name="top3_header">Top 3 Categories of Spending</string>
+    <string name="daily_breakdown">Daily Breakdown</string>
 
     <!-- Menu Strings -->
     <string name="action_jump">Jump to Today</string>
