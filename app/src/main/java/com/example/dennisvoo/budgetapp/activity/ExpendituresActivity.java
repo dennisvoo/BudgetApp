@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+import com.example.dennisvoo.budgetapp.Adapter.PurchaseAdapter;
 import com.example.dennisvoo.budgetapp.R;
 import com.example.dennisvoo.budgetapp.model.Purchase;
 

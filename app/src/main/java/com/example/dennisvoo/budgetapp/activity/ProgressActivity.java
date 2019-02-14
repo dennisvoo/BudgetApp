@@ -3,7 +3,6 @@ package com.example.dennisvoo.budgetapp.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -11,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.dennisvoo.budgetapp.Adapter.DayAdapter;
 import com.example.dennisvoo.budgetapp.R;
 import com.example.dennisvoo.budgetapp.model.BudgetMonth;
 import com.example.dennisvoo.budgetapp.model.Purchase;

@@ -1,4 +1,4 @@
-package com.example.dennisvoo.budgetapp.activity;
+package com.example.dennisvoo.budgetapp.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
