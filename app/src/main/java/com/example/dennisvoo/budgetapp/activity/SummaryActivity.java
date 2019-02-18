@@ -222,6 +222,25 @@ public class SummaryActivity extends AppCompatActivity {
      * This sends user to progress activity for that specific month.
      */
     public void dailyBreakdown(View view) {
+        BudgetMonth summMonth =
+                realm.where(BudgetMonth.class).contains("name", name).findFirst();
 
+        Intent progressIntent = new Intent(this, ProgressActivity.class);
+        // give month number to progressIntent to display correct month's progress
+        progressIntent.putExtra("monthNum", summMonth.getMonthNumber());
+        startActivity(progressIntent);
+    }
+
+    /**
+     * This allows user to view all purchases within month.
+     */
+    public void viewMonthPurchases(View view) {
+        BudgetMonth summMonth =
+                realm.where(BudgetMonth.class).contains("name", name).findFirst();
+
+        Intent expendIntent = new Intent(this, ExpendituresActivity.class);
+        expendIntent.putExtra("date", summMonth.getName());
+        expendIntent.putExtra("wholeMonth", true);
+        startActivity(expendIntent);
     }
 }

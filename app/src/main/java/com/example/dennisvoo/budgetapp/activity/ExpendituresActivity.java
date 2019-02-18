@@ -9,9 +9,11 @@ import android.widget.TextView;
 
 import com.example.dennisvoo.budgetapp.Adapter.PurchaseAdapter;
 import com.example.dennisvoo.budgetapp.R;
+import com.example.dennisvoo.budgetapp.model.BudgetMonth;
 import com.example.dennisvoo.budgetapp.model.Purchase;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class ExpendituresActivity extends AppCompatActivity {
@@ -58,8 +60,17 @@ public class ExpendituresActivity extends AppCompatActivity {
     }
 
     private void loadPurchaseList(String date) {
-        RealmResults<Purchase> purchasesInDay =
-                realm.where(Purchase.class).contains("date", date).findAll();
+        RealmList<Purchase> purchasesInDay = new RealmList<>();
+
+        if (getIntent().getBooleanExtra("wholeMonth",false) == false) {
+            RealmResults<Purchase> results =
+                    realm.where(Purchase.class).contains("date", date).findAll();
+            purchasesInDay.addAll(results);
+        } else {
+            BudgetMonth thisMonth =
+                    realm.where(BudgetMonth.class).contains("name", date).findFirst();
+            purchasesInDay = thisMonth.getPurchases();
+        }
 
 
         int resultsSize = purchasesInDay.size();

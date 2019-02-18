@@ -72,6 +72,15 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
         Date date = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
+        // Check to see if we are sent to this activity from main or summary activity
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String monthNum = bundle.getString("monthNum");
+            String monthStr = monthNum.substring(4);
+            String yearStr = monthNum.substring(0,4);
+            cal.set(Calendar.MONTH, Integer.parseInt(monthStr) - 1);
+            cal.set(Calendar.YEAR, Integer.parseInt(yearStr));
+        }
         cal.set(Calendar.DAY_OF_MONTH, 1);
         cal.set(Calendar.HOUR, 0);
         date = cal.getTime();
@@ -110,7 +119,7 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
         determineIfUserOnBudget(dailyAmountSpent);
 
         dayAdapter.setMonthProgress(monthProgress);
-        // set scroll position to current day
+        // set scroll position to current day if we got here from main activity
         setToToday();
     }
 
@@ -162,7 +171,12 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
      */
     private void setToToday() {
         Calendar cal = Calendar.getInstance();
-        int currDay = cal.get(Calendar.DAY_OF_MONTH) - 1;
+        int currDay;
+        if (getIntent().getExtras() == null) {
+            currDay = cal.get(Calendar.DAY_OF_MONTH) - 1;
+        } else {
+            currDay = 0;
+        }
         layoutManager.scrollToPositionWithOffset(currDay,0);
     }
 

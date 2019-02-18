@@ -50,8 +50,9 @@
     <string name="amt_saved_total">Amount Saved in Total: $%1$.2f</string>
     <string name="top3_header">Top 3 Categories of Spending</string>
     <string name="daily_breakdown">Daily Breakdown</string>
+    <string name="months_purchases">All purchases for month</string>
 
     <!-- Menu Strings -->
-    <string name="action_jump">Jump to Today</string>
+    <string name="action_jump">Reset</string>
 
 </resources>
