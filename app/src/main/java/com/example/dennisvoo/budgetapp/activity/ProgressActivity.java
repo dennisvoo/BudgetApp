@@ -15,6 +15,9 @@ import com.example.dennisvoo.budgetapp.R;
 import com.example.dennisvoo.budgetapp.model.BudgetMonth;
 import com.example.dennisvoo.budgetapp.model.Purchase;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -109,8 +112,17 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
 
             dailyAmountSpent[indexOfDay] =
                     purchasesInDay.sum("purchaseAmount").doubleValue();
+
+            // use big decimal for rounding doubles when printing out purchase amount
+            Double doubleAmount = dailyAmountSpent[indexOfDay];
+            BigDecimal bd = new BigDecimal(doubleAmount).setScale(2, RoundingMode.HALF_UP);
+            doubleAmount = bd.doubleValue();
+            // use decimal format to ensure two decimal places
+            DecimalFormat df = new DecimalFormat("0.00");
+            String dollarForm = df.format(doubleAmount);
+
             monthProgress[indexOfDay] =
-                    todayStr + " " + "Amount spent: $" + dailyAmountSpent[indexOfDay];
+                    todayStr + " " + "Amount spent: $" + dollarForm;
             cal.add(Calendar.DAY_OF_MONTH, 1);
             date = cal.getTime();
         }

@@ -66,8 +66,6 @@ public class SummaryActivity extends AppCompatActivity {
      * @param summMonth used to find details about month we are summarizing
      */
     private void setUpSummaryText(BudgetMonth summMonth) {
-
-
         // Go through current month's purchases and sum up to find how much user spent this month
         amountSpentTV = findViewById(R.id.tv_amt_spent_month);
 
