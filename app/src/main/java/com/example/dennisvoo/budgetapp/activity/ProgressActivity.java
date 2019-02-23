@@ -122,7 +122,7 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
             String dollarForm = df.format(doubleAmount);
 
             monthProgress[indexOfDay] =
-                    todayStr + " " + "Amount spent: $" + dollarForm;
+                    todayStr + "\n" + "Amount spent: $" + dollarForm;
             cal.add(Calendar.DAY_OF_MONTH, 1);
             date = cal.getTime();
         }
@@ -141,7 +141,7 @@ public class ProgressActivity extends AppCompatActivity implements DayAdapter.Da
      */
     public void onClick(String dayData) {
         // Cut string at end of date portion
-        String clickedDate = dayData.split(" Amount")[0];
+        String clickedDate = dayData.split("\n")[0];
 
         // create intent to send to ExpendituresActivity with date clickedDate string as extra
         Intent expendIntent = new Intent(this, ExpendituresActivity.class);
