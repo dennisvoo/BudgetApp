@@ -212,7 +212,7 @@ public class SummaryActivity extends AppCompatActivity {
         grid = findViewById(R.id.top3);
 
         ArrayAdapter<String> top3Adapter =
-                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, top3Array);
+                new ArrayAdapter<>(this, R.layout.grid_item_border, top3Array);
         grid.setAdapter(top3Adapter);
     }
 

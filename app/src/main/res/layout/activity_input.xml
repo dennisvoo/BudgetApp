@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/input_layout"
     android:layout_width="match_parent"
@@ -11,55 +12,80 @@
     tools:context=".activity.InputActivity">
 
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp">
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
             android:text="@string/month_choice_txt"
-            android:textSize="20sp"/>
-        
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="end"
-            android:textAlignment="gravity"
-            android:layout_marginEnd="4dp"
-            android:text="@string/new_month_year_txt"
-            android:textSize="20sp"/>
+            android:textSize="24sp"
+            style="@style/TextView"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            style="@style/Spinner">
+
+            <Spinner
+                android:id="@+id/select_budget_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Spinner>
+
+        </RelativeLayout>
+
+
     </LinearLayout>
 
+    <TextView
+        android:layout_marginTop="16dp"
+        android:text="@string/new_month_year_txt"
+        style="@style/CenterText"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
 
-        <Spinner
-            android:id="@+id/select_budget_month"
+
+        <RelativeLayout
             android:layout_margin="8dp"
             android:layout_width="0dp"
-            android:layout_weight="1.25"
-            android:layout_height="wrap_content">
-        </Spinner>
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            style="@style/Spinner">
 
-        <Spinner
-            android:id="@+id/select_new_month"
+            <Spinner
+                android:id="@+id/select_new_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Spinner>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_margin="8dp"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content">
-        </Spinner>
+            android:layout_height="wrap_content"
+            style="@style/Spinner">
 
-        <Spinner
-            android:id="@+id/select_new_year"
-            android:layout_margin="8dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
-        </Spinner>
+            <Spinner
+                android:id="@+id/select_new_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Spinner>
+
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -68,54 +94,41 @@
         android:text="@string/month_button_txt"
         android:onClick="submitNewMonth"
         android:layout_gravity="end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        style="@style/EdgeButton" />
 
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="32dp"
+        android:paddingTop="16dp"
         android:text="@string/enter_save_amount"
-        android:textSize="24sp"
-        android:layout_gravity="center"
         android:paddingBottom="8dp"
-        android:labelFor="@+id/et_saving" />
+        android:labelFor="@+id/et_saving"
+        style="@style/CenterText"/>
 
     <EditText
         android:id="@+id/et_saving"
         android:inputType="numberDecimal"
         android:imeOptions="actionNext"
-        android:layout_gravity="center"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content" />
+        style="@style/EditText" />
 
     <TextView
         android:paddingTop="48dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/enter_spend_amount"
-        android:textSize="24sp"
-        android:layout_gravity="center"
         android:paddingBottom="8dp"
-        android:labelFor="@+id/et_budget" />
+        android:labelFor="@+id/et_budget"
+        style="@style/CenterText"/>
 
     <EditText
         android:id="@+id/et_budget"
         android:inputType="numberDecimal"
         android:imeOptions="actionDone"
-        android:layout_gravity="center"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content" />
+        style="@style/EditText"/>
 
     <Button
         android:id="@+id/submit_budget_button"
         android:layout_marginTop="32dp"
         android:text="@string/budget_button_txt"
         android:onClick="submitBudget"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        style="@style/CenterButton" />
 
 
 </LinearLayout>

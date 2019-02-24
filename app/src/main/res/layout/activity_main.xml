@@ -9,6 +9,7 @@
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:background="@color/white"
     tools:context=".activity.MainActivity">
 
     <TextView
@@ -17,106 +18,62 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="36sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:fontFamily="monospace"
-        android:paddingBottom="16dp" />
+        android:fontFamily="serif"
+        android:textColor="@color/black"
+        android:background="@color/colorAccent"
+        android:paddingBottom="12dp"
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/input_button"
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/CenterButton"
         android:onClick="inputMe"
-        android:text="@string/input_button_txt" />
+        android:text="@string/input_button_txt"
+        />
 
     <Button
         android:id="@+id/progress_button"
-        android:layout_margin="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/CenterButton"
         android:onClick="checkProgress"
-        android:text="@string/progress_button_txt" />
+        android:text="@string/progress_button_txt"
+        />
 
     <TextView
         android:id="@+id/tv_money_left"
         android:text="@string/money_left"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        style="@style/CenterText"
+/>
 
-    <LinearLayout
-        android:paddingTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="100dp">
 
-        <TextView
-            android:text="@string/enter_expenditures"
-            android:textSize="20sp"
-            android:textAlignment="center"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent" />
+    <TextView
+        android:text="@string/enter_expenditures"
+        style="@style/CenterText"/>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
 
-            <TextView
-                android:text="@string/amount_in_dollars"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp" />
+    <EditText
+        android:id="@+id/et_amount"
+        android:inputType="numberDecimal"
+        android:imeOptions="actionNext"
+        android:hint="@string/amount_in_dollars"
+        style="@style/EditText"/>
 
-            <EditText
-                android:id="@+id/et_amount"
-                android:inputType="numberDecimal"
-                android:imeOptions="actionNext"
-                android:layout_width="match_parent"
-                android:layout_weight="2"
-                android:layout_height="0dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="@string/category"
-                android:textSize="16sp"
-                android:textAlignment="center"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp" />
-
-            <EditText
-                android:id="@+id/et_category"
-                android:inputType="text"
-                android:imeOptions="actionDone"
-                android:layout_width="match_parent"
-                android:layout_weight="2"
-                android:layout_height="0dp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    <EditText
+        android:id="@+id/et_category"
+        android:inputType="text"
+        android:imeOptions="actionDone"
+        android:hint="@string/category"
+        style="@style/EditText"/>
 
     <Button
         android:id="@+id/expenditures_button"
         android:onClick="submitExpenditures"
         android:text="@string/expenditures_button_txt"
         android:layout_gravity="end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        style="@style/EdgeButton" />
 
     <LinearLayout
         android:layout_marginTop="8dp"
@@ -127,22 +84,28 @@
         <TextView
             android:id="@+id/tv_summary"
             android:text="@string/summary_spinner_txt"
-            android:textSize="16dp"
-            android:textAlignment="gravity"
+            android:textSize="20sp"
             android:gravity="right"
+            android:layout_marginTop="4dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/TextView" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
-
-        <Spinner
-            android:id="@+id/select_summary"
             android:layout_marginEnd="8dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
+            style="@style/Spinner">
+        
+            <Spinner
+                android:id="@+id/select_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </Spinner>
 
-        </Spinner>
+        </RelativeLayout>
 
     </LinearLayout>
 

@@ -10,19 +10,20 @@
     <TextView
         android:id="@+id/tv_summary_title"
         android:textSize="40sp"
+        android:background="@color/colorAccent"
         style="@style/TextAppearance.AppCompat.Title"
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:paddingBottom="16dp" />
+        android:paddingBottom="8dp"
+        android:layout_marginBottom="8dp"/>
 
     <TextView
         android:id="@+id/tv_amt_spent_month"
         android:text="@string/amt_spent_month"
-        android:textSize="22sp"
-        style="@style/TextAppearance.AppCompat"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -32,8 +33,9 @@
     <TextView
         android:id="@+id/tv_net_spend_month"
         android:text="@string/net_spend_month"
-        android:textSize="22sp"
-        style="@style/TextAppearance.AppCompat"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -44,7 +46,8 @@
         android:id="@+id/tv_net_spent_disclaimer"
         android:text="@string/net_spend_disclaimer"
         android:textSize="16sp"
-        style="@style/TextAppearance.AppCompat"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -54,8 +57,9 @@
     <TextView
         android:id="@+id/tv_amt_saved_month"
         android:text="@string/amt_saved_month"
-        android:textSize="22sp"
-        style="@style/TextAppearance.AppCompat"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -65,8 +69,9 @@
     <TextView
         android:id="@+id/tv_amt_saved_total"
         android:text="@string/amt_saved_total"
-        android:textSize="22sp"
-        style="@style/TextAppearance.AppCompat"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -76,12 +81,12 @@
     <TextView
         android:id="@+id/tv_top3_header"
         android:text="@string/top3_header"
-        android:textSize="22sp"
-        style="@style/TextAppearance.AppCompat"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        android:textSize="24sp"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="16dp"/>
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -91,22 +96,24 @@
         <TextView
             android:id="@+id/tv_cat_header"
             android:text="@string/category_header"
-            android:textSize="16sp"
-            style="@style/TextAppearance.AppCompat.Title"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/black"
+            android:textSize="24sp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="20dp" />
 
         <TextView
             android:id="@+id/tv_amt_header"
             android:text="@string/amount_header"
-            android:textSize="16sp"
-            style="@style/TextAppearance.AppCompat.Title"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/black"
+            android:textSize="24sp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="20dp" />
 
     </LinearLayout>
 
@@ -115,6 +122,8 @@
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
         android:numColumns="2">
 
     </GridView>
@@ -129,15 +138,13 @@
             android:id="@+id/daily_breakdown_button"
             android:onClick="dailyBreakdown"
             android:text="@string/daily_breakdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="@style/EdgeButton" />
 
         <Button
             android:id="@+id/months_purchases"
             android:onClick="viewMonthPurchases"
             android:text="@string/months_purchases"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="@style/EdgeButton" />
 
     </LinearLayout>
 

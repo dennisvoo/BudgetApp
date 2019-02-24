@@ -12,7 +12,8 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp">
+        android:paddingBottom="16dp"
+        android:background="@color/colorAccent">
 
         <TextView
             android:id="@+id/tv_money_spent_month"
