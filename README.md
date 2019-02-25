@@ -1,7 +1,7 @@
 # Budget App
 
 ## Installation
-Download included apk file on an android device.
+Download included apk file on an android device and allow permissions for the app.
 
 ## About This App
 This app allows the user to track their income on a day to day basis. Each expenditure is tracked and can be checked by looking
